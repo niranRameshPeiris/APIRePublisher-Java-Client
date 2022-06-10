@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="APIRePublish:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/APIRePublish_jar</output-path>
+    <root id="archive" name="APIRePublish.jar">
+      <element id="module-output" name="APIRePublish" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/gson-2.2.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
