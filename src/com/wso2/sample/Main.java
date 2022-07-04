@@ -24,7 +24,7 @@ import java.util.Scanner;
 public class Main {
 
     private static String DCR_ENDPOINT = "/client-registration/v0.14/register";
-    private static String TOKEN_ENDPOINT = "/token";
+    private static String TOKEN_ENDPOINT = "/oauth2/token";
     private static String API_LIST = "/api/am/publisher/v0.14/apis";
     private static String REPUBLISH_ENDPOINT = "/api/am/publisher/v0.14/apis/change-lifecycle";
     private static String USERNAME = "admin";
@@ -45,8 +45,8 @@ public class Main {
         Scanner scanner= new Scanner(System.in);
         System.out.print("Enter management URL (Ex:localhost:9443) : ");
         String mgtHostname= scanner.nextLine();
-        System.out.print("Enter Gateway URL (Ex:localhost:8243) : ");
-        String gwHostname= scanner.nextLine();
+        //System.out.print("Enter Gateway URL (Ex:localhost:8243) : ");
+        //String gwHostname= scanner.nextLine();
         System.out.print("Enter Tenant Admin Username (Ex:admin@tenant.com) : ");
         String username= scanner.nextLine();
         System.out.print("Enter Tenant Admin Password : ");
@@ -55,7 +55,7 @@ public class Main {
         String appName= scanner.nextLine();
 
         DCR_ENDPOINT = "https://" + mgtHostname +DCR_ENDPOINT;
-        TOKEN_ENDPOINT = "https://" + gwHostname +TOKEN_ENDPOINT;
+        TOKEN_ENDPOINT = "https://" + mgtHostname +TOKEN_ENDPOINT;
         API_LIST= "https://" + mgtHostname +API_LIST;
         REPUBLISH_ENDPOINT= "https://" + mgtHostname +REPUBLISH_ENDPOINT;
         USERNAME= username;
