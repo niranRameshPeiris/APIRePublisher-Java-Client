@@ -1,4 +1,5 @@
 # APIRePublisher-Java-Client
+Without Pre-defined list of APIs.
 ```
 niran:niran$ java -jar APIRePublish.jar 
 ==============================================
@@ -28,6 +29,47 @@ API_LIST Endpoint Response: {"count":2,"next":"","previous":"","list":[{"id":"08
 ============ API List Received ============
 ============ API : t2api1 : Successfully Changed the State to Demote%20to%20Created ============
 ============ API : t2api1 : Successfully Changed the State to Publish ============
+============ API : t2api2 : Successfully Changed the State to Demote%20to%20Created ============
+============ API : t2api2 : Successfully Changed the State to Publish ============
+==============================================
+============ Java Client Completed ===========
+==============================================
+```
+With Pre-defined list of APIs.
+```
+niran$ java -jar APIRePublish.jar 
+==============================================
+============ Starting Java Client ============
+==============================================
+Enter management URL (Ex:localhost:9443) : localhost:9443
+Enter Tenant Admin Username (Ex:admin@tenant.com) : niran@test.com
+Enter Tenant Admin Password : admin
+Enter SP Name (Ex:rest_api_publisher_client) : rest_api_publisher_client
+List of APIs From Config File (yes/no) : yes
+Number of APIs in the list : 2
+============ Starting Client Registration ============
+Base64 Encoded Credentials: bmlyYW5AdGVzdC5jb206YWRtaW4=
+Client Registration Call Response Code :200
+DCR Endpoint Response: {"clientId":"a5E6oIvHPBSezoieESwXoMzZskAa","clientName":"niran_rest_api_publisher_client","callBackURL":"www.google.lk","clientSecret":"5lF6L9j8jS6WLvZVFTEoRS9YUjoa","isSaasApplication":true,"appOwner":null,"jsonString":"{\"grant_types\":\"password refresh_token\"}","jsonAppAttribute":"{}","tokenType":null}
+Client ID : a5E6oIvHPBSezoieESwXoMzZskAa
+Client Secret : 5lF6L9j8jS6WLvZVFTEoRS9YUjoa
+Client Credentials : YTVFNm9JdkhQQlNlem9pZUVTd1hvTXpac2tBYTo1bEY2TDlqOGpTNldMdlpWRlRFb1JTOVlVam9h
+============ Client Registration Completed ============
+============ Generating Access Token ============
+Token Call Response Code :200
+Token Endpoint Response: {"access_token":"8597ab04-1853-397f-9dd3-c7c988a36085","refresh_token":"9498d357-309b-3f6b-89b3-1a50372b0e51","scope":"apim:api_publish apim:api_view","token_type":"Bearer","expires_in":3600}
+Access Token : 8597ab04-1853-397f-9dd3-c7c988a36085
+============ Access Token Generated ============
+============ Retrieving t2api3: API Details ============
+API_DETAILS Call Response Code :200
+API_DETAILS Endpoint Response: {"count":1,"next":"","previous":"","list":[{"id":"1913f7e1-e442-4a6c-94f2-2b404a46c026","name":"t2api3","description":null,"context":"/t/test.com/t2api3","version":"v1","provider":"niran@test.com","status":"PUBLISHED","thumbnailUri":null}],"pagination":{"total":1,"offset":0,"limit":25}}
+============ API Details Received ============
+============ Retrieving t2api2: API Details ============
+API_DETAILS Call Response Code :200
+API_DETAILS Endpoint Response: {"count":1,"next":"","previous":"","list":[{"id":"cb7148ca-19d9-433d-b5e4-ccbe158a6572","name":"t2api2","description":null,"context":"/t/test.com/t2api2","version":"v1","provider":"niran@test.com","status":"PUBLISHED","thumbnailUri":null}],"pagination":{"total":1,"offset":0,"limit":25}}
+============ API Details Received ============
+============ API : t2api3 : Successfully Changed the State to Demote%20to%20Created ============
+============ API : t2api3 : Successfully Changed the State to Publish ============
 ============ API : t2api2 : Successfully Changed the State to Demote%20to%20Created ============
 ============ API : t2api2 : Successfully Changed the State to Publish ============
 ==============================================
