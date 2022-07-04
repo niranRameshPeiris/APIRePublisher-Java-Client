@@ -7,11 +7,8 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.BufferedReader;
+import java.io.*;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,6 +35,8 @@ public class Main {
 
         String AccessToken = null;
         API[] APIList = null;
+        int NumberOfAPIs = 0;
+
         System.out.println("==============================================");
         System.out.println("============ Starting Java Client ============");
         System.out.println("==============================================");
@@ -53,6 +52,12 @@ public class Main {
         String password= scanner.nextLine();
         System.out.print("Enter SP Name (Ex:rest_api_publisher_client) : ");
         String appName= scanner.nextLine();
+        System.out.print("List of APIs From Config File (yes/no) : ");
+        String ListOfAPIs= scanner.nextLine();
+        if(ListOfAPIs.equals("yes")){
+            System.out.print("Number of APIs in the list : ");
+            NumberOfAPIs= scanner.nextInt();
+        }
 
         DCR_ENDPOINT = "https://" + mgtHostname +DCR_ENDPOINT;
         TOKEN_ENDPOINT = "https://" + mgtHostname +TOKEN_ENDPOINT;
@@ -62,6 +67,7 @@ public class Main {
         PASSWORD= password;
         APP_NAME= appName;
 
+        // Register the Client Application
         String ClientCredentials = ClientRegistration(USERNAME,PASSWORD,APP_NAME);
 
         try {
@@ -70,6 +76,7 @@ public class Main {
             System.out.println("An Exception Occurred: " + e);
         }
 
+        // Get the Access Token
         if( ClientCredentials != null){
             AccessToken = GettingAccessToken(USERNAME,PASSWORD,ClientCredentials);
         }
@@ -81,17 +88,44 @@ public class Main {
         }
 
         if( AccessToken != null){
-            APIList = GetListOfTenantAPIs(AccessToken);
-            try {
-                Thread.sleep(1000);
-            } catch(InterruptedException e) {
-                System.out.println("An Exception Occurred: " + e);
+            // Check whether the API list is pre-defined or not
+            if(ListOfAPIs.equals("yes")){
+                try
+                {
+                    File file=new File("APIList.txt");
+                    FileReader fr=new FileReader(file);
+                    BufferedReader br=new BufferedReader(fr);
+                    String line;
+
+                    API TempAPIList[] = new API[NumberOfAPIs];
+                    int i =0;
+                    while((line=br.readLine())!=null)
+                    {
+                        API api = GetTenantAPI(AccessToken, line);
+                        TempAPIList[i] = api;
+                        i++;
+                    }
+                    fr.close();
+                    APIList =TempAPIList;
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                APIList = GetListOfTenantAPIs(AccessToken);
+                try {
+                    Thread.sleep(1000);
+                } catch(InterruptedException e) {
+                    System.out.println("An Exception Occurred: " + e);
+                }
             }
 
+            // Republish the APIs
             if(APIList != null){
 
                 for(API API : APIList) {
-
                     if(API.getStatus().equals("PUBLISHED")){
                         APIStateChange(AccessToken, API.getId(), API.getName() , "Demote%20to%20Created");
                         try {
@@ -104,6 +138,7 @@ public class Main {
                 }
 
             }
+
         }
 
         System.out.println("==============================================");
@@ -127,6 +162,42 @@ public class Main {
         } else {
             System.out.println(responseCode + "Error Changing API :"+Name+" : State ....");
         }
+    }
+
+    public static API GetTenantAPI(String AccessToken, String Name) throws IOException {
+        System.out.println("============ Retrieving "+ Name+": API Details ============");
+
+        API API = new API();
+        URL obj = new URL(API_LIST+"?query=name:"+Name);
+        HttpURLConnection httpURLConnection = (HttpURLConnection) obj.openConnection();
+        httpURLConnection.setRequestMethod("GET");
+        httpURLConnection.setRequestProperty("Authorization", "Bearer "+AccessToken);
+
+        int responseCode = httpURLConnection.getResponseCode();
+        System.out.println("API_DETAILS Call Response Code :" + responseCode);
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in .readLine()) != null) {
+                response.append(inputLine);
+            } in .close();
+
+            System.out.println("API_DETAILS Endpoint Response: " + response.toString());
+            JsonObject jsonObject = new JsonParser().parse(response.toString()).getAsJsonObject();
+
+            API.setName(jsonObject.get("list").getAsJsonArray().get(0).getAsJsonObject().get("name").getAsString());
+            API.setId(jsonObject.get("list").getAsJsonArray().get(0).getAsJsonObject().get("id").getAsString());
+            API.setStatus(jsonObject.get("list").getAsJsonArray().get(0).getAsJsonObject().get("status").getAsString());
+
+        } else {
+            System.out.println("Error connecting to API_DETAILS Endpoint ....");
+        }
+
+        System.out.println("============ API Details Received ============");
+        return API;
     }
 
     public static API[] GetListOfTenantAPIs(String AccessToken) throws IOException {
