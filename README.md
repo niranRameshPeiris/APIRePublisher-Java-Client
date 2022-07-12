@@ -46,7 +46,7 @@ Enter Tenant Admin Username (Ex:admin@tenant.com) : niran@test.com
 Enter Tenant Admin Password : admin
 Enter SP Name (Ex:rest_api_publisher_client) : rest_api_publisher_client
 List of APIs From Config File (yes/no) : yes
-Number of APIs in the list : 2
+Number of APIs in the list : 3
 ============ Starting Client Registration ============
 Base64 Encoded Credentials: bmlyYW5AdGVzdC5jb206YWRtaW4=
 Client Registration Call Response Code :200
@@ -57,21 +57,27 @@ Client Credentials : YTVFNm9JdkhQQlNlem9pZUVTd1hvTXpac2tBYTo1bEY2TDlqOGpTNldMdlp
 ============ Client Registration Completed ============
 ============ Generating Access Token ============
 Token Call Response Code :200
-Token Endpoint Response: {"access_token":"8597ab04-1853-397f-9dd3-c7c988a36085","refresh_token":"9498d357-309b-3f6b-89b3-1a50372b0e51","scope":"apim:api_publish apim:api_view","token_type":"Bearer","expires_in":3600}
-Access Token : 8597ab04-1853-397f-9dd3-c7c988a36085
+Token Endpoint Response: {"access_token":"5567528d-cb29-3615-9a37-1fc1441f1c31","refresh_token":"68541ba0-5a5e-371f-896b-1210f0d3e7fd","scope":"apim:api_publish apim:api_view","token_type":"Bearer","expires_in":1128}
+Access Token : 5567528d-cb29-3615-9a37-1fc1441f1c31
 ============ Access Token Generated ============
-============ Retrieving t2api3: API Details ============
+============ Retrieving t2api3-v1: API Details ============
 API_DETAILS Call Response Code :200
 API_DETAILS Endpoint Response: {"count":1,"next":"","previous":"","list":[{"id":"1913f7e1-e442-4a6c-94f2-2b404a46c026","name":"t2api3","description":null,"context":"/t/test.com/t2api3","version":"v1","provider":"niran@test.com","status":"PUBLISHED","thumbnailUri":null}],"pagination":{"total":1,"offset":0,"limit":25}}
 ============ API Details Received ============
-============ Retrieving t2api2: API Details ============
+============ Retrieving t2api2-v1: API Details ============
 API_DETAILS Call Response Code :200
 API_DETAILS Endpoint Response: {"count":1,"next":"","previous":"","list":[{"id":"cb7148ca-19d9-433d-b5e4-ccbe158a6572","name":"t2api2","description":null,"context":"/t/test.com/t2api2","version":"v1","provider":"niran@test.com","status":"PUBLISHED","thumbnailUri":null}],"pagination":{"total":1,"offset":0,"limit":25}}
 ============ API Details Received ============
-============ API : t2api3 : Successfully Changed the State to Demote%20to%20Created ============
-============ API : t2api3 : Successfully Changed the State to Publish ============
-============ API : t2api2 : Successfully Changed the State to Demote%20to%20Created ============
-============ API : t2api2 : Successfully Changed the State to Publish ============
+============ Retrieving t2api2-v2: API Details ============
+API_DETAILS Call Response Code :200
+API_DETAILS Endpoint Response: {"count":1,"next":"","previous":"","list":[{"id":"68ff17d1-ea25-442c-a118-726eb6a61728","name":"t2api2","description":null,"context":"/t/test.com/t2api2","version":"v2","provider":"niran@test.com","status":"PUBLISHED","thumbnailUri":null}],"pagination":{"total":1,"offset":0,"limit":25}}
+============ API Details Received ============
+============ API : t2api3(1913f7e1-e442-4a6c-94f2-2b404a46c026) : Successfully Changed the State to Created State ============
+============ API : t2api3(1913f7e1-e442-4a6c-94f2-2b404a46c026) : Successfully Changed the State to Publish State ============
+============ API : t2api2(cb7148ca-19d9-433d-b5e4-ccbe158a6572) : Successfully Changed the State to Created State ============
+============ API : t2api2(cb7148ca-19d9-433d-b5e4-ccbe158a6572) : Successfully Changed the State to Publish State ============
+============ API : t2api2(68ff17d1-ea25-442c-a118-726eb6a61728) : Successfully Changed the State to Created State ============
+============ API : t2api2(68ff17d1-ea25-442c-a118-726eb6a61728) : Successfully Changed the State to Publish State ============
 ==============================================
 ============ Java Client Completed ===========
 ==============================================

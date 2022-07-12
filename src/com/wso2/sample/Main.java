@@ -59,6 +59,15 @@ public class Main {
             NumberOfAPIs= scanner.nextInt();
         }
 
+        //for testing
+        //String mgtHostname = "localhost:9443";
+        //String username = "niran@test.com";
+        //String password = "admin";
+        //String appName = "rest_api_publisher_client";
+        //String ListOfAPIs = "yes";
+        //NumberOfAPIs = 3;
+
+
         DCR_ENDPOINT = "https://" + mgtHostname +DCR_ENDPOINT;
         TOKEN_ENDPOINT = "https://" + mgtHostname +TOKEN_ENDPOINT;
         API_LIST= "https://" + mgtHostname +API_LIST;
@@ -101,7 +110,8 @@ public class Main {
                     int i =0;
                     while((line=br.readLine())!=null)
                     {
-                        API api = GetTenantAPI(AccessToken, line);
+                        String[] APIDetails=line.split("\\s");
+                        API api = GetTenantAPI(AccessToken, APIDetails[0], APIDetails[1]);
                         TempAPIList[i] = api;
                         i++;
                     }
@@ -158,17 +168,22 @@ public class Main {
         int responseCode = httpURLConnection.getResponseCode();
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
-            System.out.println("============ API : "+Name+" : Successfully Changed the State to "+State+" ============");
+            if(State.equals("Demote%20to%20Created")){
+                System.out.println("============ API : "+Name+"("+Id+") : Successfully Changed the State to Created State ============");
+            }else {
+                System.out.println("============ API : "+Name+"("+Id+") : Successfully Changed the State to "+State+" State ============");
+            }
+
         } else {
             System.out.println(responseCode + "Error Changing API :"+Name+" : State ....");
         }
     }
 
-    public static API GetTenantAPI(String AccessToken, String Name) throws IOException {
-        System.out.println("============ Retrieving "+ Name+": API Details ============");
+    public static API GetTenantAPI(String AccessToken, String Name, String Version) throws IOException {
+        System.out.println("============ Retrieving "+ Name+"-"+Version +": API Details ============");
 
         API API = new API();
-        URL obj = new URL(API_LIST+"?query=name:"+Name);
+        URL obj = new URL(API_LIST+"?query=name:"+Name+"%20version:"+Version);
         HttpURLConnection httpURLConnection = (HttpURLConnection) obj.openConnection();
         httpURLConnection.setRequestMethod("GET");
         httpURLConnection.setRequestProperty("Authorization", "Bearer "+AccessToken);
